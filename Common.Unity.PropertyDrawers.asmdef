@@ -1,0 +1,15 @@
+{
+    "name": "Common.Unity.PropertyDrawers",
+    "references": [
+        "GUID:40a094b058cc026489d2e6f678b1032f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
