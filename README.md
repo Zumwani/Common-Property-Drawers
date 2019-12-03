@@ -1,4 +1,4 @@
-# Property-Drawers
+# Common-Property-Drawers
 
 This package provides a few commonly useful property drawers:
 * Auto - Automatically gets a component on the game object, parent or children.
