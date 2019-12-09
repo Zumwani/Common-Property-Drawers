@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Linq;
+using System.Reflection;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -33,7 +35,22 @@ public class ButtonDrawer : PropertyDrawer<ButtonAttribute>
 
         property.boolValue = GUI.Button(position, label);
         if (property.boolValue)
-            property.serializedObject.targetObject.GetType().GetMethod(attribute.function)?.Invoke(property.serializedObject.targetObject, System.Array.Empty<object>());
+        {
+
+            var target = property.serializedObject.targetObject;
+            var empty = System.Array.Empty<object>();
+
+            var method = target.GetType().GetMethod(attribute.function);
+            method?.Invoke(target, empty);
+
+            var field = target.GetType().GetField(attribute.function);
+            if (field.GetValue(target, empty) is object m)
+                if (m is System.Reflection.MethodInfo mi)
+                    mi.Invoke(target, empty);
+                else if (m is Method mr)
+                    mr.Invoke();
+
+        }
 
     }
 

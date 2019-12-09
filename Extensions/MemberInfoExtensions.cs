@@ -12,7 +12,7 @@ public static class MemberInfoExtensions
             case MemberTypes.Field:
                 return ((FieldInfo)member).GetValue(instance);
             case MemberTypes.Method:
-                return ((MethodInfo)member).Invoke(instance, param);
+                return ((System.Reflection.MethodInfo)member).Invoke(instance, param);
             default:
                 return null;
         }
@@ -29,7 +29,7 @@ public static class MemberInfoExtensions
         }
     }
 
-    public static MethodInfo GetSetter(this MemberInfo member)
+    public static System.Reflection.MethodInfo GetSetter(this MemberInfo member)
     {
         switch (member.MemberType)
         {
@@ -38,7 +38,7 @@ public static class MemberInfoExtensions
             case MemberTypes.Field:
                 return null;
             case MemberTypes.Method:
-                return (MethodInfo)member;
+                return (System.Reflection.MethodInfo)member;
             default:
                 return null;
         }
