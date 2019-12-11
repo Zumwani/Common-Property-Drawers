@@ -1,6 +1,6 @@
 {
   "name": "common.editor-extensions.propertydrawers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "displayName": "Common Property Drawers",
   "description": "This package provides a few commonly useful property drawers:\nAuto - Automatically gets a component on the game object.\nRequired - Same as Auto but displays a warning when component could not be found.\nButton - Displays a button instead a toggle for a bool.\nLabel - Displays the content of the variable in text.\nShowIf - Only shows variable if condition is met.",
   "keywords": [],
