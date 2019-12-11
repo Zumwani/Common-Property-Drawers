@@ -26,6 +26,9 @@ public class FilePickerAttribute : FolderPickerAttribute
 public class FilePickerPropertyDrawer : PropertyDrawer<FolderPickerAttribute>
 {
 
+    static readonly GUIContent file = new GUIContent("...", "Open file...");
+    static readonly GUIContent folder = new GUIContent("...", "Open folder...");
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
@@ -39,13 +42,13 @@ public class FilePickerPropertyDrawer : PropertyDrawer<FolderPickerAttribute>
 
         var labelRect = new Rect(position.x, position.y, position.width - 22, position.height);
         var contentRect = new Rect(position.x, position.y + (labelRect.height / 2), position.width - 22, position.height);
-        var buttonRect = new Rect(position.xMax - 22, contentRect.y, 22, 22);
+        var buttonRect = new Rect(position.xMax - 22, contentRect.y + 12, 19, 16);
 
         var path = ShortenPath(property.stringValue, contentRect.width - 42, isFile);
 
         EditorGUI.LabelField(labelRect, label);
         EditorGUI.LabelField(contentRect, new GUIContent(path, property.stringValue));
-        if (GUI.Button(buttonRect, "📂"))
+        if (GUI.Button(buttonRect, isFile ? file : folder))
         {
             path = PickPath(property.stringValue, isFile);
             if (!string.IsNullOrEmpty(path))
@@ -83,7 +86,7 @@ public class FilePickerPropertyDrawer : PropertyDrawer<FolderPickerAttribute>
         return "";
 
     }
-        
+
     public static string ShortenPath(string path, float maxWidth, bool isFile)
     {
 

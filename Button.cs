@@ -27,6 +27,8 @@ public class ButtonAttribute : PropertyAttribute
 public class ButtonDrawer : PropertyDrawer<ButtonAttribute>
 {
 
+    const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
@@ -40,12 +42,12 @@ public class ButtonDrawer : PropertyDrawer<ButtonAttribute>
             var target = property.serializedObject.targetObject;
             var empty = System.Array.Empty<object>();
 
-            var method = target.GetType().GetMethod(attribute.function);
+            var method = target.GetType().GetMethod(attribute.function, BindingFlags.InvokeMethod | flags);
             method?.Invoke(target, empty);
 
-            var field = target.GetType().GetField(attribute.function);
+            var field = target.GetType().GetField(attribute.function, BindingFlags.GetField | flags);
             if (field.GetValue(target, empty) is object m)
-                if (m is System.Reflection.MethodInfo mi)
+                if (m is MethodInfo mi)
                     mi.Invoke(target, empty);
                 else if (m is Method mr)
                     mr.Invoke();

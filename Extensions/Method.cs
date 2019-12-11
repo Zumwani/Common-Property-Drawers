@@ -8,21 +8,22 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 [Serializable]
-public class Method : ISerializationCallbackReceiver
+public class Method : ScriptableObject, ISerializationCallbackReceiver
 {
-
-    public Method(MethodInfo methodInfo)
+    
+    public Method Set(MethodInfo method, Object target = null)
     {
-        this.methodInfo = methodInfo;
-    }
-
-    public Method(MethodInfo methodInfo, Object target)
-    {
-        this.methodInfo = methodInfo;
+        this.methodInfo = method;
         this.target = target;
+        return this;
     }
 
-    public System.Reflection.MethodInfo methodInfo;
+    public static Method CreateInstance(MethodInfo method, Object target = null)
+    {
+        return CreateInstance<Method>().Set(method, target);
+    }
+
+    public MethodInfo methodInfo;
     public SerializableType type;
     public string methodName;
     public List<SerializableType> parameters = null;
@@ -90,15 +91,17 @@ public class Method : ISerializationCallbackReceiver
             methodInfo = t.GetMethod(methodName, (BindingFlags)flags, null, param, null);
 
     }
-
+    
     public static implicit operator Method(MethodInfo method)
     {
-        return new Method(method);
+        return CreateInstance(method);
     }
 
     public static implicit operator MethodInfo(Method method)
     {
-        return method.methodInfo;
+        if (method)
+            return method.methodInfo;
+        return default;
     }
 
 }

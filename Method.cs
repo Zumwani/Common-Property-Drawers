@@ -28,8 +28,8 @@ public class MethodPropertyDrawer : PropertyDrawer
 
     Method Value
     {
-        get => (Method)fieldInfo.GetValue(parent);
-        set => property.SetValueDirect(value); //fieldInfo.SetValue(parent, value);
+        get => (Method)property.objectReferenceValue;
+        set => property.objectReferenceValue = value;
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -77,7 +77,7 @@ public class MethodPropertyDrawer : PropertyDrawer
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(property.serializedObject.targetObject, "Changed method name");
-            Value = new Method(methods[i], target);
+            Value = Method.CreateInstance(methods[i], target);
         }
          
     }
