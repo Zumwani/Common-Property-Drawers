@@ -55,16 +55,25 @@ public class AutoDrawer : PropertyDrawer<AutoAttribute>
     static readonly GUIStyle redStyle = new GUIStyle() { normal = new GUIStyleState() { textColor = Color.red } };
     static readonly GUIContent missing = new GUIContent("Missing:");
 
+    bool isFirstTime = true;
+    bool IsUndo;
+    void OnUndo() => IsUndo = true;
+    public AutoDrawer() => Undo.undoRedoPerformed += OnUndo;
+    ~AutoDrawer()       => Undo.undoRedoPerformed -= OnUndo;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
-        if (property.propertyType != SerializedPropertyType.ObjectReference)
+        var force = isFirstTime || IsUndo;
+        isFirstTime = false;
+
+        if (property.propertyType != SerializedPropertyType.ObjectReference && !force)
             return;
 
         bool hasValue = property.objectReferenceValue;
         var isTypeMismatch = hasValue && fieldInfo.FieldType != property.objectReferenceValue.GetType();
 
-        if (hasValue && !isTypeMismatch)
+        if (!force && hasValue && !isTypeMismatch)
             return;
 
         var target = ((Component)property.serializedObject.targetObject);
