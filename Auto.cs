@@ -106,6 +106,6 @@ public class AutoDrawer : PropertyDrawer<AutoAttribute>
         else
             return 0;
     }
+#endif
 
 }
-#endif
